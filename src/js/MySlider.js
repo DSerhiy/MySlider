@@ -1,4 +1,5 @@
 import '../scss/MySlider.scss';
+import EventObserver from './EventObserver';
 import crtEl from './createElement';
 
 class MySlider {
@@ -16,6 +17,8 @@ class MySlider {
     this.auto = options.auto || false;
     this.speed = options.speed || 2500;
     this.forward  = true;
+
+    this.sliderEndObserver = new EventObserver;
 
     this.init();    
   }
@@ -77,15 +80,18 @@ class MySlider {
 
   nextSlide() {
 
-    console.log(this.curSlideIndex, this.length);
-    if (this.curSlideIndex < this.slides.length - 1) {
+    if (this.curSlideIndex < this.length - 1) {
       const curSlide = this.slidesEl[this.curSlideIndex];
       const nextSlide = this.slidesEl[this.curSlideIndex + 1];
 
       this.curSlideIndex++;
       curSlide.classList.add('move-left');
       nextSlide.classList.remove('move-right');
-    }
+
+      if(this.curSlideIndex === this.length - 1)
+      this.sliderEndObserver.broadcast(this.curSlideIndex);
+
+    }    
   }
 
   autoRotate() {

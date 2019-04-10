@@ -13,7 +13,7 @@ window.onload = function () {
       auto: true,
     });
 
-  new MySlider(slider2, [
+ const s = new MySlider(slider2, [
     './asserts/img/1.jpg',
     './asserts/img/2.jpg',
     './asserts/img/3.jpg',
@@ -23,4 +23,6 @@ window.onload = function () {
       height: '400px',
       auto: false,
     });
+
+  s.sliderEndObserver.subscribe((data) => {console.log(data)});
 }
