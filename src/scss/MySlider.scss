@@ -35,12 +35,13 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
     color: rgba(46, 48, 51, 0.623);
-    font-size: 18px;
-
-    &:after {content: '<'}
+    font-size: 18px;    
   }
 
-  .btn-left {left: 5px;}
+  .btn-left {
+    left: 5px;
+    &:after {content: '<'}
+  }
 
   .btn-right {
     right: 5px;
