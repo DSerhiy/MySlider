@@ -7,7 +7,7 @@ class MySlider {
     this.root = parent;
     this.slidesEl = [];
     this.slides = slides;
-    
+
     this.curSlideIndex = 0;
     this.length = this.slides.length;
 
@@ -16,25 +16,32 @@ class MySlider {
 
     this.auto = options.auto || false;
     this.speed = options.speed || 2500;
-    this.forward  = true;
+    this.forward = true;
 
     this.sliderEndObserver = new EventObserver;
 
-    this.init();    
+    this.init();
   }
 
   init() {
-
     // set dimentions of the main slider window
+    this.setSliderSize();
+    // create DOM element for each slide
+    this.createSlideElements()
+    // checking if slider is set in auto-rotate mode
+    this.checkAutoPlay();    
+  }
+
+  setSliderSize() {
     this.root.style.width = this.width;
     this.root.style.height = this.height;
+  }
 
-    // create DOM element for each slide 
+  createSlideElements() {
     this.slides.forEach((slide, index) => {
       this.slidesEl.push(crtEl({
         element: 'div',
         classNames: `move-right slide slide${index + 1}`,
-        // textContent: slide,
         parent: this.root
       }));
     });
@@ -43,18 +50,19 @@ class MySlider {
 
     // setup images as a background of each slide
     this.slidesEl.forEach((slideEl, index) => slideEl.style.backgroundImage = `url(${this.slides[index]})`);
+  }
 
-    // checking if slider is set in auto-rotate mode
-    if(this.auto) { this.autoRotate()} 
+  checkAutoPlay() {
+    if (this.auto) { this.autoRotate() }
     else {
 
-     const btnLeftEl = crtEl({
+      const btnLeftEl = crtEl({
         element: 'div',
         classNames: 'btn-left',
         parent: this.root
       });
 
-     const btnRightEl = crtEl({
+      const btnRightEl = crtEl({
         element: 'div',
         classNames: 'btn-right',
         parent: this.root
@@ -62,8 +70,7 @@ class MySlider {
 
       btnLeftEl.addEventListener('click', () => { this.previousSlide() });
       btnRightEl.addEventListener('click', () => { this.nextSlide() });
-    } 
-
+    }
   }
 
   previousSlide() {
@@ -88,25 +95,25 @@ class MySlider {
       curSlide.classList.add('move-left');
       nextSlide.classList.remove('move-right');
 
-      if(this.curSlideIndex === this.length - 1)
-      this.sliderEndObserver.broadcast(this.curSlideIndex);
+      if (this.curSlideIndex === this.length - 1)
+        this.sliderEndObserver.broadcast(this.curSlideIndex);
 
-    }    
+    }
   }
 
   autoRotate() {
     setInterval(() => {
 
-      if(this.curSlideIndex === 0)
+      if (this.curSlideIndex === 0)
         this.forward = true;
 
-      if(this.curSlideIndex === this.length - 1) 
+      if (this.curSlideIndex === this.length - 1)
         this.forward = false;
-      
-      if(this.forward) 
+
+      if (this.forward)
         this.nextSlide();
-      else  
-        this.previousSlide();    
+      else
+        this.previousSlide();
 
     }, this.speed);
   }
